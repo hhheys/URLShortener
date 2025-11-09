@@ -1,0 +1,16 @@
+CREATE TABLE users (
+ id SERIAL PRIMARY KEY,
+ "name" VARCHAR(255) NOT NULL UNIQUE,
+ email VARCHAR(255) NOT NULL UNIQUE,
+ "password" VARCHAR(256) NOT NULL,
+ created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+ updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE short_url(
+    id SERIAL PRIMARY KEY,
+    long_value TEXT UNIQUE,
+    short_value VARCHAR(8) UNIQUE,
+    user_id INT,
+    CONSTRAINT fk_url_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);

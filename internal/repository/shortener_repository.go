@@ -18,7 +18,7 @@ func NewShortenerRepository(conn *sql.DB) *ShortenerRepository {
 func (r ShortenerRepository) CreateShortLink(link string, shortLink string) (*model.Link, error) {
 	var id int
 	err := r.db.QueryRow(
-		"INSERT INTO short_url(url, short_value) VALUES ($1, $2) RETURNING id, url, short_value", link, shortLink,
+		"INSERT INTO short_url(long_value, short_value) VALUES ($1, $2) RETURNING id, long_value, short_value", link, shortLink,
 	).Scan(
 		&id,
 		&link,
@@ -33,7 +33,7 @@ func (r ShortenerRepository) CreateShortLink(link string, shortLink string) (*mo
 
 func (r ShortenerRepository) GetLinkFromShort(shortLink string) (*model.Link, error) {
 	rows := r.db.QueryRow(
-		"SELECT id, url, short_value FROM short_url WHERE short_value = $1", shortLink,
+		"SELECT id, long_value, short_value FROM short_url WHERE short_value = $1", shortLink,
 	)
 
 	var link string
